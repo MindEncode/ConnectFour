@@ -14,8 +14,8 @@ import java.util.Scanner;
 
 public class ConnectFour {
     // fields
-    private double score = 0;
-    private char player = ' ';
+    private double score;
+    private char player;
 
     // constructor
     public ConnectFour(char color) {
@@ -23,9 +23,7 @@ public class ConnectFour {
     }
 
     private void setScore(double score) { this.score = score; }
-    private double getScore() {
-        return score;
-    }
+    private double getScore() { return score; }
 
     public static void main(String[] args) {
         ConnectFour redPlayer = new ConnectFour('R');
@@ -97,14 +95,13 @@ public class ConnectFour {
             try {
                 System.out.print("Drop a " + ((player == 'R') ? "red" : "yellow") + " disk at column (0–6): ");
                 int column = in.nextInt();
-                columnIsIncorrectOrFull = false;
 
-                if (!correctColumnNumber(column) || columnIsFull(board, column)) {
+                if (!correctColumnNumber(column) || columnIsFull(board, column))
                     System.out.println("The selected column is full or has the wrong number");
-                    columnIsIncorrectOrFull = true;
-                }
-
-                updateTheBoard(board, column, player);
+                
+                insertDisk(board, column, player);
+                drawTheBoard(board);
+                columnIsIncorrectOrFull = false;
 
             } catch (Exception ex) {
                 System.out.println("The column must be ONlY a number between 0-6");
@@ -113,12 +110,7 @@ public class ConnectFour {
             }
         }
     }
-
-    public static void updateTheBoard(char[][] board, int column, char player) {
-        insertDisk(board, column, player);
-        drawTheBoard(board);
-    }
-
+    
     public static void insertDisk(char[][] board, int column, char disk) {
         for (int row=board.length-1; row>=0; row--) {
             if (board[row][column] != 'R' && board[row][column] != 'Y' ) {
@@ -164,7 +156,6 @@ public class ConnectFour {
     }
 
     public static boolean weHaveWinner(char[][] board, ConnectFour p1, ConnectFour p2) {
-        boolean gameEnded = false;
         char winner = getWinner(board);
 
         if (winner != ' ') {
@@ -173,16 +164,16 @@ public class ConnectFour {
                 p1.setScore(1);
             else
                 p2.setScore(1);
-            gameEnded = true;
+            return true;
         }
 
         if (boardIsFull(board)) {
             System.out.println("It's a draw");
             p1.setScore(0.5);
             p2.setScore(0.5);
-            gameEnded = true;
+            return true;
         }
-        return gameEnded;
+        return false;
     }
 
     public static char getWinner(char[][] board) {
