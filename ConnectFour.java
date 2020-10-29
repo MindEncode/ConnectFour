@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class ConnectFour {
     // fields
-    private double score;
+    private double score = 0;
     private char player;
 
     // constructor
@@ -22,7 +22,7 @@ public class ConnectFour {
         player = color;
     }
 
-    private void setScore(double score) { this.score = score; }
+    private void setScore(double score) { this.score += score; }
     private double getScore() { return score; }
 
     public static void main(String[] args) {
